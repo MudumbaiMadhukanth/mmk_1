@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Selection</title>
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  .grid-item {
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  <!-- Generate buttons in a 4x4 layout -->
+  <!-- Each button should have a unique ID or data attribute associated with the models it represents -->
+  <!-- For simplicity, only two buttons are shown here -->
+  <div class="grid-item"><button onclick="showModels('model1')">Model 1</button></div>
+  <div class="grid-item"><button onclick="showModels('model2')">Model 2</button></div>
+  <!-- Add more buttons here -->
+</div>
+
+<!-- Placeholder for model selection -->
+<div id="modelSelection"></div>
+
+<script>
+// Function to show models based on the button clicked
+function showModels(modelType) {
+  // Placeholder logic to display models
+  // In a real application, you would fetch model details from the server
+  document.getElementById('modelSelection').innerHTML = 'Models for ' + modelType;
+  // Add logic to proceed to payment
+}
+
+// Add more JavaScript here for handling user credentials verification and payment
+</script>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Selection and Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-container, .grid-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .grid-container button {
+            padding: 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #5cb85c;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .grid-container button:hover {
+            background-color: #4cae4c;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    <div class="grid-container" style="display: none;">
+        <button onclick="showModal('product1')">Product 1</button>
+        <button onclick="showModal('product2')">Product 2</button>
+        <button onclick="showModal('product3')">Product 3</button>
+        <button onclick="showModal('product4')">Product 4</button>
+        <!-- Add more buttons for additional products -->
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Select a Model and Variant</h2>
+            <form id="modelForm">
+                <select id="modelSelect" required>
+                    <option value="" disabled selected>Select your model</option>
+                </select><br><br>
+                <select id="variantSelect" required>
+                    <option value="" disabled selected>Select a variant</option>
+                </select><br><br>
+                <button type="button" onclick="proceedToPayment()">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const productModels = {
+            product1: {
+                models: ['Model A', 'Model B', 'Model C'],
+                variants: {
+                    'Model A': ['Variant 1', 'Variant 2'],
+                    'Model B': ['Variant 3', 'Variant 4'],
+                    'Model C': ['Variant 5', 'Variant 6']
+                }
+            },
+            product2: {
+                models: ['Model X', 'Model Y', 'Model Z'],
+                variants: {
+                    'Model X': ['Variant 7', 'Variant 8'],
+                    'Model Y': ['Variant 9', 'Variant 10'],
+                    'Model Z': ['Variant 11', 'Variant 12']
+                }
+            },
+            product3: {
+                models: ['Model P', 'Model Q', 'Model R'],
+                variants: {
+                    'Model P': ['Variant 13', 'Variant 14'],
+                    'Model Q': ['Variant 15', 'Variant 16'],
+                    'Model R': ['Variant 17', 'Variant 18']
+                }
+            },
+            product4: {
+                models: ['Model D', 'Model E', 'Model F'],
+                variants: {
+                    'Model D': ['Variant 19', 'Variant 20'],
+                    'Model E': ['Variant 21', 'Variant 22'],
+                    'Model F': ['Variant 23', 'Variant 24']
+                }
+            }
+            // Add more products if needed
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.querySelector('.login-container').style.display = 'none';
+            document.querySelector('.grid-container').style.display = 'grid';
+        });
+
+        function showModal(productId) {
+            const modal = document.getElementById('modal');
+            const modelSelect = document.getElementById('modelSelect');
+            const variantSelect = document.getElementById('variantSelect');
+
+            // Clear existing options
+            modelSelect.innerHTML = '<option value="" disabled selected>Select your model</option>';
+            variantSelect.innerHTML = '<option value="" disabled selected>Select a variant</option>';
+
+            // Populate models
+            productModels[productId].models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        function populateVariants() {
+            const modelSelect = document.getElementById('modelSelect');
+            const variantSelect = document.getElementById('variantSelect');
+            const productId = document.getElementById('modelSelect').value;
+
+            // Clear existing variants
+            variantSelect.innerHTML = '<option value="" disabled selected>Select a variant</option>';
+
+            // Populate variants based on selected model
+            productModels[productId].variants[modelSelect.value].forEach(variant => {
+                const option = document.createElement('option');
+                option.value = variant;
+                option.textContent = variant;
+                variantSelect.appendChild(option);
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+       function proceedToPayment() {
+    const selectedModel = document.getElementById('modelSelect').value;
+    const selectedVariant = document.getElementById('variantSelect').value;
+
+    if (selectedModel && selectedVariant) {
+        const confirmationMessage = `You have selected ${selectedModel} (${selectedVariant}). Proceeding to payment.`;
+        alert(confirmationMessage);
+        closeModal();
+    } else {
+        alert('Please select both a model and a variant.');
+    }
+}
+</script>
+</body>
+</html>
